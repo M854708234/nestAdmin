@@ -28,9 +28,9 @@ cos:
 # 数据库配置
 db:
   mysql:
-    host: '127.0.0.1'
+    host: 'localhost'
     username: 'root'
-    password: 'yehuozhili'
+    password: '123456'
     database: 'nest-admin'
     port: 3306
     charset: 'utf8mb4'
@@ -45,14 +45,14 @@ db:
 # redis 配置
 redis:
   host: 'localhost'
-  password: '*********'
+  password: '123456'
   port: 6379
   db: 2
   keyPrefix: ''
 
 # jwt 配置
 jwt:
-  secretkey: 'you_secretkey'
+  secretkey: 'nest_admin_secret_key'
   expiresin: '1h'
   refreshExpiresIn: '2h'
 # 权限 白名单配置

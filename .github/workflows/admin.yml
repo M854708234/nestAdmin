@@ -1,0 +1,70 @@
+name: 前端部署工作流
+on:
+  push:
+    branches: [main]
+    paths:
+      - "admin-vue3/**"
+      - "admin.yml"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 配置Node环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.12"
+          cache: "npm"
+
+      - name: 安装依赖与构建
+        run: |
+          cd admin-vue3
+          npm ci
+          npm run build
+
+      - name: 服务器环境准备（含Docker优化）
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          debug: true
+          script: |
+            # 创建目录和备份（保持原有逻辑）
+            if [ ! -d "/nest/www" ]; then
+              sudo mkdir -p /nest/www && sudo chown -R $USER:$USER /nest/www && chmod 755 /nest/www
+            fi
+            if [ -d "/nest/www/dist" ]; then
+              BACKUP_DIR="/nest/www/dist_backup_$(date +%Y%m%d%H%M)"
+              mv /nest/www/dist $BACKUP_DIR
+            fi
+
+      - name: 传输前端文件和Docker配置
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          source: "./dist/*"
+          target: "/nest/www"
+          overwrite: true
+          recursive: true
+
+      - name: 验证部署结果
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            if [-d "/nest/www/dist/index.html"] then
+              echo "✅ 部署成功"
+            else
+              echo "❌ 部署失败"
+              exit 1
+            fi
