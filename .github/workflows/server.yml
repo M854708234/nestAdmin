@@ -2,9 +2,9 @@ name: 部署服务器端代码
 on:
   push:
     branches: [master]
-    paths:
-      - "server/**"
-      - "server.yml"
+    # paths:
+    #   - "server/**"
+    #   - "server.yml"
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
