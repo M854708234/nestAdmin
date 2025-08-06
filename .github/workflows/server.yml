@@ -1,7 +1,7 @@
 name: 部署服务器端代码
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - "server/**"
       - "server.yml"
