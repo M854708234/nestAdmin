@@ -13,18 +13,22 @@ jobs:
       - name: 拉取代码1
         uses: actions/checkout@v4
 
-      - name: 切换根目录
-        run: cd admin-vue3
-        working-directory: admin-vue3
+      - name: 查看当前工作目录
+        run: |
+          pwd
+          ls -la
 
       - name: 配置Node环境
         uses: actions/setup-node@v4
         with:
           node-version: "22.12"
           cache: "npm"
+          cache-dependency-path: "admin-vue3/package-lock.json"
 
       - name: 安装依赖与构建
         run: |
+          cd admin-vue3
+          echo "当前目录：$(pwd)"
           npm ci
           npm run build
 
