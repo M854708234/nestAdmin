@@ -44,8 +44,12 @@ jobs:
               mv /nest/www/dist $BACKUP_DIR
             fi
 
-      - name: 查看工作目录
+      - name: 切换工作目录
         run: |
+          echo "当前工作目录：$(pwd)"
+          ls -la
+        working-directory: ./admin-vue3
+      - run: |
           echo "当前工作目录：$(pwd)"
           ls -la
 
