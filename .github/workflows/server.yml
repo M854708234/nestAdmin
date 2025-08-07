@@ -106,7 +106,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./distServer"
+          source: "./distServer/dist/*,./distServer/config/*"
           target: "/nest/server"
           overwrite: true
           recursive: true
