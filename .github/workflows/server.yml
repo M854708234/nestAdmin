@@ -123,6 +123,9 @@ jobs:
 
             # 移动dist和config到正确位置
             mv /nest/server/distServer/dist /nest/server/dist
+            if [ -d "/nest/server/config" ]; then
+              rm -rf /nest/server/config
+            fi
             mv /nest/server/distServer/config /nest/server/config
             rm -rf /nest/server/distServer
 
