@@ -6,7 +6,7 @@ on:
     #   - "server/**"
     #   - "server.yml"
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取代码
@@ -24,6 +24,24 @@ jobs:
           cd server
           npm ci
           npm run build
+
+      - name: upload to file
+        uses: actions/upload-artifact@v4
+        with:
+          name: "build-output-server"
+          path: "./server/dist,./server/config"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 创建下载文件目录
+        run: mkdir -p distServer
+
+      - name: download file
+        uses: actions/download-artifact@v4
+        with:
+          name: "build-output-server"
+          path: "./distServer"
 
       - name: 服务器环境准备（含Docker优化）
         uses: appleboy/ssh-action@v1.0.2
@@ -86,7 +104,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./dist/*,./config/*"
+          source: "./distServer/*"
           target: "/nest/server"
           overwrite: true
           recursive: true
