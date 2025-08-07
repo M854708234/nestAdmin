@@ -13,8 +13,9 @@ jobs:
       - name: 拉取代码1
         uses: actions/checkout@v4
 
-      - run: ls -la /
-      - run: cd admin-vue3
+      - name: 切换根目录
+        run: cd admin-vue3
+        working-directory: admin-vue3
 
       - name: 配置Node环境
         uses: actions/setup-node@v4
