@@ -1,22 +1,6 @@
 version: '3.8'
 
 services:
-  nginx:
-    image: nginx:alpine # 使用轻量的Nginx镜像
-    container_name: vite-react-app
-    restart: always # 容器退出时自动重启
-    ports:
-      - '80:80' # 映射主机80端口到容器80端口（可修改为443并添加HTTPS配置）
-    volumes:
-      - ../www/dist:/usr/share/nginx/html # 挂载前端静态文件到Nginx
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf # 挂载自定义Nginx配置
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost'] # 健康检查：访问本地主页
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-services:
   # MySQL 服务
   mysql:
     image: mysql:8.0
@@ -29,11 +13,11 @@ services:
     volumes:
       - ./mysql-data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - '3306:3306'
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 3
@@ -47,7 +31,7 @@ services:
     volumes:
       - ./redis-data:/data
     ports:
-      - "6379:6379"
+      - '6379:6379'
     networks:
       - backend
 
@@ -68,7 +52,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: 123456
     ports:
-      - "3000:3000"
+      - '3000:3000'
     working_dir: /app
     command: sh -c "npm install pm2 -g && pm2-runtime dist/main.js"
     depends_on:
@@ -84,14 +68,14 @@ services:
     container_name: nginx
     volumes:
       - ../www/dist:/usr/share/nginx/html # 挂载前端静态文件到Nginx
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf # 挂载自定义Nginx配置
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf # 挂载自定义Nginx配置
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost'] # 健康检查：访问本地主页
       interval: 30s
       timeout: 10s
       retries: 3
     ports:
-      - "80:80"
+      - '80:80'
     depends_on:
       - pm2-nestjs
     networks:
@@ -100,4 +84,3 @@ services:
 networks:
   backend:
     driver: bridge
-
