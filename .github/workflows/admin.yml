@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            if [-d "/nest/www/dist/index.html"] then
+            if [-d "/nest/www/dist/index.html"]; then
               echo "✅ 部署成功"
             else
               echo "❌ 部署失败"
