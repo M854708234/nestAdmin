@@ -13,11 +13,6 @@ jobs:
       - name: 拉取代码1
         uses: actions/checkout@v4
 
-      - name: 查看当前工作目录
-        run: |
-          pwd
-          ls -la
-
       - name: 配置Node环境
         uses: actions/setup-node@v4
         with:
@@ -28,9 +23,8 @@ jobs:
       - name: 安装依赖与构建
         run: |
           cd admin-vue3
-          echo "当前目录：$(pwd)"
           npm ci
-          npm run build
+          npm run build:prod
 
       - name: 服务器环境准备（含Docker优化）
         uses: appleboy/ssh-action@v1.0.2

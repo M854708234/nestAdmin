@@ -17,9 +17,11 @@ jobs:
         with:
           node-version: "22.12"
           cache: "npm"
+          cache-dependency-path: "server/package-lock.json"
 
       - name: 安装依赖与构建
         run: |
+          cd server
           npm ci
           npm run build
 
