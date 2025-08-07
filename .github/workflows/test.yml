@@ -2,6 +2,7 @@ name: 前端部署工作流
 on:
   push:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -53,7 +54,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "dist1/file1,dist1/file2"
+          source: "dist1/file1"
           target: "/nest/www1"
           overwrite: true
           recursive: true
