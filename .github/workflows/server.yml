@@ -119,6 +119,12 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /nest/server || exit 1
+
+            # 当前目录
+            echo "当前目录：$(pwd)"
+            echo "列出当前目录内容："
+            ls -la $(pwd)
+
             docker-compose down  # 停止旧容器
 
             # 移动dist和config到正确位置
