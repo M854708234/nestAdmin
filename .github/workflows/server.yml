@@ -31,7 +31,7 @@ jobs:
           name: "build-output-server"
           path: |
             ./server/dist
-            ./server/config
+            ./server/config/**
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -106,7 +106,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./distServer/dist/*,./distServer/config/*"
+          source: "./distServer/*"
           target: "/nest/server"
           overwrite: true
           recursive: true
