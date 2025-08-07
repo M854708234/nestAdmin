@@ -44,7 +44,12 @@ jobs:
               mv /nest/www/dist $BACKUP_DIR
             fi
 
-      - name: 传输前端文件和Docker配置
+      - name: 查看工作目录
+        run: |
+          echo "当前工作目录：$(pwd)"
+          ls -la
+
+      - name: 传输前端文件
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SERVER_HOST }}
