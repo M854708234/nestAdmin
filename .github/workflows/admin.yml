@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./dist/*"
+          source: "./admin-vue3/dist/*"
           target: "/nest/www"
           overwrite: true
           recursive: true
