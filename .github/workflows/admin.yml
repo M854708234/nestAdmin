@@ -4,7 +4,7 @@ on:
     branches: [master]
     paths:
       - "admin-vue3/**"
-      - "admin.yml"
+      - ".github/workflows/admin.yml"
 
 jobs:
   build:
