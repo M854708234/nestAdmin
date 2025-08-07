@@ -7,7 +7,7 @@ on:
     #   - "admin.yml"
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: 拉取代码1
@@ -25,6 +25,24 @@ jobs:
           cd admin-vue3
           npm ci
           npm run build:prod
+
+      - name: upload to file
+        uses: actions/upload-artifact@v4
+        with:
+          name: "build-output"
+          path: "./admin-vue3/dist"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 创建下载文件目录
+        run: mkdir -p dist
+
+      - name: download file
+        uses: actions/download-artifact@v4
+        with:
+          name: "build-output"
+          path: "./dist"
 
       - name: 服务器环境准备（含Docker优化）
         uses: appleboy/ssh-action@v1.0.2
@@ -44,15 +62,6 @@ jobs:
               mv /nest/www/dist $BACKUP_DIR
             fi
 
-      - name: 切换工作目录
-        run: |
-          echo "当前工作目录：$(pwd)"
-          ls -la
-        working-directory: ./admin-vue3
-      - run: |
-          echo "当前工作目录：$(pwd)"
-          ls -la
-
       - name: 传输前端文件
         uses: appleboy/scp-action@v1
         with:
@@ -60,7 +69,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./admin-vue3/dist/*"
+          source: "./dist/*"
           target: "/nest/www"
           overwrite: true
           recursive: true
