@@ -110,10 +110,6 @@ jobs:
           target: "/nest/server"
           overwrite: true
           recursive: true
-          script: |
-            mv /nest/server/distServer/dist /nest/server/dist
-            mv /nest/server/distServer/config /nest/server/config
-            rm -rf /nest/server/distServer
 
       - name: 通过docker-compose启动服务（带超时优化）
         uses: appleboy/ssh-action@v1.0.2
@@ -124,6 +120,11 @@ jobs:
           script: |
             cd /nest/server || exit 1
             docker-compose down  # 停止旧容器
+
+            # 移动dist和config到正确位置
+            mv /nest/server/distServer/dist /nest/server/dist
+            mv /nest/server/distServer/config /nest/server/config
+            rm -rf /nest/server/distServer
 
             # 关键修复3：增加拉取超时时间，重试机制
             echo "===== 拉取镜像（带超时和重试） ====="
