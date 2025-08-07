@@ -106,10 +106,14 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "./distServer/dist, ./distServer/config"
+          source: "./distServer/*"
           target: "/nest/server"
           overwrite: true
           recursive: true
+          script: |
+            mv /nest/server/distServer/dist /nest/server/dist
+            mv /nest/server/distServer/config /nest/server/config
+            rm -rf /nest/server/distServer
 
       - name: 通过docker-compose启动服务（带超时优化）
         uses: appleboy/ssh-action@v1.0.2

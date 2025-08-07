@@ -54,7 +54,11 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "dist1/file1"
+          source: "./dist1/*"
           target: "/nest/www1"
           overwrite: true
           recursive: true
+          script: |
+            mv /nest/www1/dist1/file1 /nest/www1/file1
+            mv /nest/www1/dist1/file2 /nest/www1/file2
+            rm -rf /nest/www1/dist1
