@@ -12,6 +12,7 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
+      - run: ls -la /
       - run: cd server
 
       - name: 配置Node环境
