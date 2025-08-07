@@ -138,7 +138,7 @@ jobs:
             done
 
             # 启动服务
-            docker-compose up -d --build
+            docker-compose -f server/config/docker-compose.yml up -d --build
 
             # 验证容器状态
             docker-compose ps
