@@ -23,4 +23,4 @@ jobs:
           npm run build
 
       - name: upload to file
-        run: ls -la
+        run: tree
