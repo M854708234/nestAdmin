@@ -23,4 +23,4 @@ jobs:
           npm run build
 
       - name: upload to file
-        run: tree
+        run: ls -la /server/node_modules
