@@ -130,6 +130,7 @@ jobs:
             rm -rf /nest/server/distServer
 
             docker-compose -f ./config/docker-compose.yml down  # 停止旧容器
+            docker network rm config_backend  # 删除旧网络（如果存在）
 
             # 关键修复3：增加拉取超时时间，重试机制
             echo "===== 拉取镜像（带超时和重试） ====="
@@ -151,8 +152,8 @@ jobs:
             docker-compose -f ./config/docker-compose.yml up -d --build
 
             # 验证容器状态
-            docker-compose ps
-            docker-compose logs --tail=100
+            docker-compose -f ./config/docker-compose.yml ps
+            docker-compose -f ./config/docker-compose.yml logs --tail=100
 
       - name: 验证部署结果
         uses: appleboy/ssh-action@v1.0.2
